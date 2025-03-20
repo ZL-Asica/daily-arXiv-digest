@@ -16,9 +16,11 @@ Otherwise, you can directly use this repo. Please star it if you like :)
    1. `CATEGORIES`: separate the categories with ",", such as "cs.CL, cs.CV"
    2. `LANGUAGE`: such as "Chinese" or "English"
    3. `MODEL_NAME`: such as "deepseek-chat"
+   4. `EMAIL`: your email for push to github
+   5. `NAME`: your name for push to github
 7. Go to your-own-repo -> Actions -> arXiv-daily-ai-enhanced
-8. You can manually click **Run workflow** to test if it works well (it may takes about 1 hour). 
-By default, this action will automatically run every day at 16:30 UTC time (0:30 Beijing Time, this time DeepSeek starts to discount).
+8. You can manually click **Run workflow** to test if it works well (it may takes about 20 minutes). 
+By default, this action will automatically run every day
 You can modify it in `.github/workflows/run.yml`
 
 # Content
