@@ -19,7 +19,7 @@ Otherwise, you can directly use this repo. Please star it if you like :)
    4. `EMAIL`: your email for push to github
    5. `NAME`: your name for push to github
 7. Go to your-own-repo -> Actions -> arXiv-daily-ai-enhanced
-8. You can manually click **Run workflow** to test if it works well (it may takes about 20 minutes). 
+8. You can manually click **Run workflow** to test if it works well (it may takes about one hour). 
 By default, this action will automatically run every day
 You can modify it in `.github/workflows/run.yml`
 
