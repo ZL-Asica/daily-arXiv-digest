@@ -1,11 +1,19 @@
 import json
 import argparse
+import os
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=str, help="Path to the jsonline file")
     args = parser.parse_args()
     data = []
+    preference = os.environ.get('CATEGORIES', 'cs.CV, cs.CL').split(',')
+    preference = list(map(lambda x: x.strip(), preference))
+    def rank(cate):
+        if cate in preference:
+            return preference.index(cate)
+        else:
+            return len(preference)
 
     with open(args.data, "r") as f:
         for line in f:
@@ -13,7 +21,7 @@ if __name__ == "__main__":
 
     categories = set([item["categories"][0] for item in data])
     template = open("paper_template.md", "r").read()
-    categories = sorted(categories)
+    categories = sorted(categories, key=rank)
     markdown = f"<div id=toc></div>\n\n# Table of Contents\n\n"
     for idx, cate in enumerate(categories):
         markdown += f"- [{cate}](#{cate})\n"
