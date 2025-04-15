@@ -1,6 +1,7 @@
 import json
 import argparse
 import os
+from itertools import count
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -26,6 +27,7 @@ if __name__ == "__main__":
     for idx, cate in enumerate(categories):
         markdown += f"- [{cate}](#{cate})\n"
 
+    idx = count(1)
     for cate in categories:
         markdown += f"\n\n<div id='{cate}'></div>\n\n"
         markdown += f"# {cate} [[Back]](#toc)\n\n"
@@ -42,6 +44,7 @@ if __name__ == "__main__":
                     result=item['AI']['result'],
                     conclusion=item['AI']['conclusion'],
                     cate=item['categories'][0],
+                    idx=next(idx)
                 )
                 for item in data if item["categories"][0] == cate
             ]
