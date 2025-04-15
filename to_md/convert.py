@@ -13,9 +13,14 @@ if __name__ == "__main__":
 
     categories = set([item["categories"][0] for item in data])
     template = open("paper_template.md", "r").read()
-    markdown = ""
+    categories = sorted(categories)
+    markdown = f"<div id=toc></div>\n\n# Table of Contents\n\n"
+    for idx, cate in enumerate(categories):
+        markdown += f"- [{cate}](#{cate})\n"
+
     for cate in categories:
-        markdown += f"# {cate}\n\n"
+        markdown += f"\n\n<div id='{cate}'></div>\n\n"
+        markdown += f"# {cate} [[Back]](#toc)\n\n"
         markdown += "\n\n".join(
             [
                 template.format(
