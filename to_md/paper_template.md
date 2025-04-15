@@ -1,12 +1,15 @@
 ### [{title}]({url})
 *{authors}*
 
-Task: {task}
+Main category: {cate}
 
-Motivation: {motivation}
+TLDR: {tldr}
+
 
 <details>
   <summary>Details</summary>
+Motivation: {motivation}
+
 Method: {method}
 
 Result: {result}

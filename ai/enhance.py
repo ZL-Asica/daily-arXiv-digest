@@ -33,6 +33,16 @@ def main():
     with open(args.data, "r") as f:
         for line in f:
             data.append(json.loads(line))
+
+    seen_ids = set()
+    unique_data = []
+    for item in data:
+        if item['id'] not in seen_ids:
+            seen_ids.add(item['id'])
+            unique_data.append(item)
+
+    data = unique_data
+
     print('Open:', args.data, file=sys.stderr)
 
     llm = ChatOpenAI(model=model_name).with_structured_output(Structure, method="function_calling")
