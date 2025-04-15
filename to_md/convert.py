@@ -23,9 +23,15 @@ if __name__ == "__main__":
     categories = set([item["categories"][0] for item in data])
     template = open("paper_template.md", "r").read()
     categories = sorted(categories, key=rank)
+    cnt = {cate: 0 for cate in categories}
+    for item in data:
+        if item["categories"][0] not in cnt.keys():
+            continue
+        cnt[item["categories"][0]] += 1
+
     markdown = f"<div id=toc></div>\n\n# Table of Contents\n\n"
     for idx, cate in enumerate(categories):
-        markdown += f"- [{cate}](#{cate})\n"
+        markdown += f"- [{cate}](#{cate}) [Total: {cnt[cate]}]\n"
 
     idx = count(1)
     for cate in categories:
