@@ -1,5 +1,5 @@
 # About
-This tool will daily crawl https://arxiv.org and use LLMs to summary them.
+This tool will daily crawl https://arxiv.org and use LLMs to summarize them.
 
 # How to use
 This repo will daily crawl arXiv papers about **cs.CV and cs.CL**, and use **DeepSeek** to summarize the papers in **Chinese**.
