@@ -64,7 +64,7 @@ def main():
         except langchain_core.exceptions.OutputParserException as e:
             print(f"{d['id']} has an error: {e}", file=sys.stderr)
             d['AI'] = {
-                 "task": "Error",
+                 "tldr": "Error",
                  "motivation": "Error",
                  "method": "Error",
                  "result": "Error",
