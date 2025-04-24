@@ -26,7 +26,7 @@ Otherwise, you can directly use this repo. Please star it if you like :)
 4. Create two repository secrets named `OPENAI_API_KEY`, and input corresponding values.
 5. Go to Variables. Variables are shown as plain text and are used for non-sensitive data
 6. Create the following repository variables:
-    1. `CATEGORIES`: separate the categories with ", ", such as "cs.HC, cs.LG, cs.CL"
+    1. `CATEGORIES`: separate the categories with ",", such as "cs.HC,cs.LG,cs.CL"
     2. `MODEL_NAME` such as "gpt-4o-mini"
 7. Go to your-own-repo -> Actions -> `daily-arXiv-digest`
 8. You can manually click **Run workflow** to test if it works well (it may takes about one hour).
@@ -34,6 +34,15 @@ By default, this action will automatically run every day
 You can modify it in `.github/workflows/run.yml`
 
 ## Content
+
+_**Last update: April 24, 2025 at 09:14 PM**_
+
+## 2025
+
+### 📅 April 🌟
+
+- [2025-04-24](data/2025-04-24.md)
+
 
 ## Related tools
 
