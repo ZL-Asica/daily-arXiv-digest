@@ -1,15 +1,18 @@
-import json
 import argparse
+import json
 import os
 from itertools import count
+
+from tqdm import tqdm
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=str, help="Path to the jsonline file")
     args = parser.parse_args()
     data = []
-    preference = os.environ.get('CATEGORIES', 'cs.CV, cs.CL').split(',')
+    preference = os.environ.get("CATEGORIES", "cs.HC,cs.LG,cs.CL").split(",")
     preference = list(map(lambda x: x.strip(), preference))
+
     def rank(cate):
         if cate in preference:
             return preference.index(cate)
@@ -34,7 +37,7 @@ if __name__ == "__main__":
         markdown += f"- [{cate}](#{cate}) [Total: {cnt[cate]}]\n"
 
     idx = count(1)
-    for cate in categories:
+    for cate in tqdm(categories, desc="Generating markdown", unit="category"):
         markdown += f"\n\n<div id='{cate}'></div>\n\n"
         markdown += f"# {cate} [[Back]](#toc)\n\n"
         markdown += "\n\n".join(
@@ -43,17 +46,18 @@ if __name__ == "__main__":
                     title=item["title"],
                     authors=",".join(item["authors"]),
                     summary=item["summary"],
-                    url=item['abs'],
-                    tldr=item['AI']['tldr'],
-                    motivation=item['AI']['motivation'],
-                    method=item['AI']['method'],
-                    result=item['AI']['result'],
-                    conclusion=item['AI']['conclusion'],
-                    cate=item['categories'][0],
-                    idx=next(idx)
+                    url=item["abs"],
+                    tldr=item["AI"]["tldr"],
+                    motivation=item["AI"]["motivation"],
+                    method=item["AI"]["method"],
+                    result=item["AI"]["result"],
+                    conclusion=item["AI"]["conclusion"],
+                    cate=item["categories"][0],
+                    idx=next(idx),
                 )
-                for item in data if item["categories"][0] == cate
+                for item in data
+                if item["categories"][0] == cate
             ]
         )
-    with open(args.data.split('_')[0] + '.md', "w") as f:
+    with open(args.data.split("_")[0] + ".md", "w") as f:
         f.write(markdown)

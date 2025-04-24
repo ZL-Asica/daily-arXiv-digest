@@ -1,41 +1,68 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: arXiv-daily-ai-enhanced
+name: daily-arXiv-digest
 
 on:
   schedule:
-    - cron: "30 16 * * *"
+    - cron: "0 11 * * *"
   workflow_dispatch:
 
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      CATEGORIES: ${{ vars.CATEGORIES }}
+      MODEL_NAME: ${{ vars.MODEL_NAME }}
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - name: Install dependencies
       run: |
         curl -LsSf https://astral.sh/uv/install.sh | sh
         uv sync
-    - name: Run script
+
+    - name: Activate virtualenv and set environment variables
       run: |
         source .venv/bin/activate
-        export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-        export OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}
-        export LANGUAGE="${{ vars.LANGUAGE }}"
-        export CATEGORIES="${{ vars.CATEGORIES }}"
-        export MODEL_NAME="${{ vars.MODEL_NAME }}"
-        bash run.sh
-    - name: commit
+        echo "Using model: $MODEL_NAME"
+
+    - name: Scrape arXiv 🔍
       run: |
-        git config --global user.email "${{ vars.EMAIL }}"
-        git config --global user.name "${{ vars.NAME }}"
+        source .venv/bin/activate
+        today=$(date -u "+%Y-%m-%d")
+        cd daily_arxiv
+        scrapy crawl arxiv -o ../data/${today}.jsonl
+
+    - name: Generate AI summaries 🤖
+      run: |
+        source .venv/bin/activate
+        today=$(date -u "+%Y-%m-%d")
+        python -m ai.main -i data/${today}.jsonl -o data/${today}_AI_enhanced.jsonl
+
+    - name: Convert to Markdown 📄
+      run: |
+        source .venv/bin/activate
+        today=$(date -u "+%Y-%m-%d")
+        cd to_md
+        python convert.py --data ../data/${today}_AI_enhanced.jsonl
+
+    - name: Update README 📝
+      run: |
+        source .venv/bin/activate
+        python update_readme.py
+
+    - name: Commit and push changes 🚀
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "update"
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        git status
+        git commit -m "✨ Updated arXiv papers on $(date -u '+%Y-%m-%d')" || echo "No changes to commit"
+        git push
