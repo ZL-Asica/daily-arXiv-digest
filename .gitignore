@@ -11,3 +11,6 @@ wheels/
 ai/.env
 test/*
 .idea/
+
+.DS_Store
+.mypy_cache
