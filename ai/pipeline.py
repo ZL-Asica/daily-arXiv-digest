@@ -33,8 +33,13 @@ class PaperRefresher:
         # dedupe by id
         seen = set()
         unique = []
+        target_categories = [cat.strip() for cat in settings.categories.split(",")]
         for item in raw:
-            if (pid := item.get("id")) and pid not in seen:
+            if (
+                (pid := item.get("id"))
+                and pid not in seen
+                and item.get("categories")[0] in target_categories
+            ):
                 seen.add(pid)
                 unique.append(item)
         logger.info(f"Loaded {len(unique)} unique records from {settings.input_path}")

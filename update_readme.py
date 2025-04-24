@@ -36,7 +36,7 @@ def render_readme(template_path: str, toc: dict):
 
     # Sort years descending
     for year in sorted(toc.keys(), reverse=True):
-        sections.append(f"## {year}\n")
+        sections.append(f"### {year}\n")
         # Within each year, sort months by calendar order
         # Create a list of month names Jan–Dec
         month_order = [
@@ -58,7 +58,7 @@ def render_readme(template_path: str, toc: dict):
                 continue
             is_current = year == current_year and month == current_month
             if is_current:
-                sections.append(f"### 📅 {month} 🌟\n")
+                sections.append(f"#### 📅 {month} 🌟\n")
                 for date_str, path in sorted(toc[year][month], reverse=True):
                     sections.append(f"- [{date_str}]({path})")
                 sections.append("")  # blank line

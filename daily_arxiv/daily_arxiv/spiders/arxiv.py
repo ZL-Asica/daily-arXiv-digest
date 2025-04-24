@@ -1,13 +1,13 @@
-import scrapy
 import os
+
+import scrapy
 
 
 class ArxivSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        categories = os.environ.get("CATEGORIES", "cs.CV")
-        categories = categories.split(",")
-        categories = list(map(str.strip, categories))
+        categories = os.environ.get("CATEGORIES", "cs.HC,cs.LG,cs.CL")
+        categories = [cat.strip() for cat in categories.split(",") if cat.strip()]
         self.start_urls = [
             f"https://arxiv.org/list/{cat}/new" for cat in categories
         ]  # 起始URL（计算机科学领域的最新论文）
