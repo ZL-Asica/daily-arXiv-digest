@@ -33,6 +33,9 @@ def main():
     settings.output_path = Path(args.output_file)
     settings.pdf_folder = Path(args.pdf_folder) if args.pdf_folder else None
 
+    if settings.pdf_folder is not None:
+        print(f"PDF folder set to: {settings.pdf_folder}")
+
     # configure logging
     logging.basicConfig(
         level=settings.log_level,

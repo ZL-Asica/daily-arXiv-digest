@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class PaperRefresher:
-    def __init__(self):
+    def __init__(self) -> None:
         # load seen IDs
         self.seen: set[str] = set()
         if settings.seen_file.exists():
@@ -57,7 +57,9 @@ class PaperRefresher:
 
     def run(self) -> None:
         entries = self.load_data()
-        assert entries, "No new papers to process."
+        if len(entries) == 0:
+            logger.info("No new records to process.")
+            return
 
         enhanced = []
         for entry in tqdm(entries, desc="Processing papers"):

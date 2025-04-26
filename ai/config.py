@@ -17,7 +17,7 @@ class Settings:
         # set via CLI -p/--pdf_folder
         self.pdf_folder: Path | None = None
         # Set a env variable SEEN_FILE to a file path to store seen IDs
-        self.seen_file: Path = Path(os.getenv("SEEN_FILE", "seen_ids.txt"))
+        self.seen_file: Path = Path(os.getenv("SEEN_FILE", "contents/seen_ids.txt"))
         self.log_level: str = os.getenv("LOG_LEVEL", "INFO")
 
 
