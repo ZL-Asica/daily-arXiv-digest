@@ -1,5 +1,0 @@
-Analyze the following paper symmary.
-Note: The input is an summary, not the full paper. Your output should be based strictly on this information.
-
-Symmary:
-{content}

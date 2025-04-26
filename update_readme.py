@@ -74,7 +74,7 @@ def render_readme(template_path: str, toc: dict):
 
 
 if __name__ == "__main__":
-    DATA_DIR = "data"
+    DATA_DIR = "contents"
     TEMPLATE = "template.md"
 
     toc = build_toc(DATA_DIR)

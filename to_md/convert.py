@@ -69,16 +69,23 @@ if __name__ == "__main__":
                         summary=item["summary"].replace("\n", " "),
                         url=item["abs"],
                         tldr=item["AI"]["tldr"],
+                        cate=cate,
+                        keywords=", ".join(item["AI"]["keywords"]),
+                        relevance_score=item["AI"]["importance_score"],
+                        read_time=item["AI"]["read_time_minutes"],
                         motivation=item["AI"]["motivation"],
                         method=item["AI"]["method"],
                         result=item["AI"]["result"],
                         conclusion=item["AI"]["conclusion"],
-                        cate=cate,
+                        key_contributions=", ".join(item["AI"]["key_contributions"]),
+                        limitations=item["AI"]["limitations"],
+                        future_work=item["AI"]["future_work"],
                         idx=next(idx),
                     )
                 )
 
     output_md = data_path.with_name(data_path.stem.split("_")[0] + ".md")
+    output_md = Path(str(output_md).replace("/data/", "/contents/"))
     output_md.write_text("\n\n".join(output_lines), encoding="utf-8")
 
     print(f"Total papers: {len(data)}")

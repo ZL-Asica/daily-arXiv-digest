@@ -16,6 +16,9 @@ def parse_args():
     parser.add_argument(
         "-o", "--output_file", required=True, help="Path to output JSONL file"
     )
+    parser.add_argument(
+        "-p", "--pdf_folder", help="Folder containing downloaded PDFs to include"
+    )
     return parser.parse_args()
 
 
@@ -28,6 +31,7 @@ def main():
 
     settings.input_path = Path(args.input_file)
     settings.output_path = Path(args.output_file)
+    settings.pdf_folder = Path(args.pdf_folder) if args.pdf_folder else None
 
     # configure logging
     logging.basicConfig(

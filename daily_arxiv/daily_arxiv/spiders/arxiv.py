@@ -4,32 +4,31 @@ import scrapy
 
 
 class ArxivSpider(scrapy.Spider):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        categories = os.environ.get("CATEGORIES", "cs.HC,cs.LG,cs.CL")
-        categories = [cat.strip() for cat in categories.split(",") if cat.strip()]
-        self.start_urls = [
-            f"https://arxiv.org/list/{cat}/new" for cat in categories
-        ]  # 起始URL（计算机科学领域的最新论文）
+    name = "arxiv"
+    allowed_domains = ["arxiv.org"]
 
-    name = "arxiv"  # 爬虫名称
-    allowed_domains = ["arxiv.org"]  # 允许爬取的域名
+    def __init__(self, pdf=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Read categories from environment
+        env = os.environ.get("CATEGORIES", "cs.HC,cs.LG,cs.CL")
+        cats = [c.strip() for c in env.split(",") if c.strip()]
+        self.start_urls = [f"https://arxiv.org/list/{c}/new" for c in cats]
+        # Optional folder to download PDFs into
+        self.pdf_folder = pdf
 
     def parse(self, response):
-        # 提取每篇论文的信息
-        anchors = []
-        for li in response.css("div[id=dlpage] ul li"):
-            anchors.append(int(li.css("a::attr(href)").get().split("item")[-1]))
+        # extract new-paper identifiers
+        ids = []
+        for li in response.css("div#dlpage ul li"):
+            # e.g. '/abs/XXXX'
+            href = li.css("a::attr(href)").get()
+            if href and "/abs/" in href:
+                ids.append(href.split("/")[-1])
 
-        for paper in response.css("dl dt"):
-            if (
-                int(paper.css("a[name^='item']::attr(name)").get().split("item")[-1])
-                >= anchors[-1]
-            ):
+        # parse each entry on the page
+        for dt in response.css("dl dt"):
+            pid = dt.css("a[title='Abstract']::attr(href)").get().split("/")[-1]
+            # skip entries newer than the first li
+            if ids and pid >= ids[-1]:
                 continue
-
-            yield {
-                "id": paper.css("a[title='Abstract']::attr(href)")
-                .get()
-                .split("/")[-1],  # 提取论文链接
-            }
+            yield {"id": pid}

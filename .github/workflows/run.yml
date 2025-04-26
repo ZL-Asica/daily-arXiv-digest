@@ -16,40 +16,36 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       CATEGORIES: ${{ vars.CATEGORIES }}
       MODEL_NAME: ${{ vars.MODEL_NAME }}
+      USER_BACKGROUND: ${{ secrets.USER_BACKGROUND }}
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+    
+    - name: Set TODAY environment variable
+      run: echo "TODAY=$(date -u '+%Y-%m-%d')" >> $GITHUB_ENV
 
     - name: Install dependencies
       run: |
         curl -LsSf https://astral.sh/uv/install.sh | sh
         uv sync
 
-    - name: Activate virtualenv and set environment variables
-      run: |
-        source .venv/bin/activate
-        echo "Using model: $MODEL_NAME"
-
     - name: Scrape arXiv 🔍
       run: |
         source .venv/bin/activate
-        today=$(date -u "+%Y-%m-%d")
         cd daily_arxiv
-        scrapy crawl arxiv -o ../data/${today}.jsonl
+        scrapy crawl arxiv -o ../data/${TODAY}.jsonl -a pdf=../data/pdf_${TODAY}/
 
     - name: Generate AI summaries 🤖
       run: |
         source .venv/bin/activate
-        today=$(date -u "+%Y-%m-%d")
-        python -m ai.main -i data/${today}.jsonl -o data/${today}_AI_enhanced.jsonl
+        python -m ai.main -i data/${TODAY}.jsonl -o data/${TODAY}_AI_enhanced.jsonl -p ../data/pdf_${TODAY}/
 
     - name: Convert to Markdown 📄
       run: |
         source .venv/bin/activate
-        today=$(date -u "+%Y-%m-%d")
         cd to_md
-        python convert.py --data ../data/${today}_AI_enhanced.jsonl
+        python convert.py --data ../data/${TODAY}_AI_enhanced.jsonl
 
     - name: Update README 📝
       run: |
@@ -64,5 +60,5 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add .
         git status
-        git commit -m "✨ Updated arXiv papers on $(date -u '+%Y-%m-%d')" || echo "No changes to commit"
+        git commit -m "✨ Updated arXiv papers on ${TODAY}" || echo "No changes to commit"
         git push

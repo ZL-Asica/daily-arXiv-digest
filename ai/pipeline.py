@@ -1,8 +1,8 @@
 import json
 import logging
-from pathlib import Path
 from typing import Dict, List
 
+import pymupdf4llm
 from langchain_core.exceptions import OutputParserException
 from langchain_openai import ChatOpenAI
 from tqdm.auto import tqdm
@@ -16,54 +16,92 @@ logger = logging.getLogger(__name__)
 
 class PaperRefresher:
     def __init__(self):
+        # load seen IDs
+        self.seen: set[str] = set()
+        if settings.seen_file.exists():
+            self.seen = set(
+                line.strip()
+                for line in settings.seen_file.read_text().splitlines()
+                if line.strip()
+            )
+
+        # build LLM
         self.llm = ChatOpenAI(model=settings.model_name).with_structured_output(
             PaperSummary, method="function_calling"
         )
-        self.chain = get_prompt_chain(
-            system_template_path=Path(__file__).parent / "system.txt",
-            human_template_path=Path(__file__).parent / "template.txt",
-            llm=self.llm,
-        )
+        self.chain = get_prompt_chain(self.llm)
 
     def load_data(self) -> List[Dict]:
         raw = []
         with settings.input_path.open() as f:
             for line in f:
                 raw.append(json.loads(line))
-        # dedupe by id
-        seen = set()
+
         unique = []
-        target_categories = [cat.strip() for cat in settings.categories.split(",")]
+        targets = [c.strip() for c in settings.categories.split(",")]
         for item in raw:
-            if (
-                (pid := item.get("id"))
-                and pid not in seen
-                and item.get("categories")[0] in target_categories
-            ):
-                seen.add(pid)
-                unique.append(item)
-        logger.info(f"Loaded {len(unique)} unique records from {settings.input_path}")
+            pid = item.get("id")
+            if not pid or pid in self.seen:
+                continue
+            if item.get("categories", [None])[0] not in targets:
+                continue
+            unique.append(item)
+
+        logger.info(f"Loaded {len(unique)} new records (excluding seen).")
         return unique
 
-    def save_result(self, records: List[Dict]):
-        with settings.output_path.open("w") as f:
-            for rec in records:
-                f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-        logger.info(f"Saved {len(records)} enhanced records to {settings.output_path}")
+    def save_seen(self, pid: str):
+        # append to seen file
+        with settings.seen_file.open("a") as f:
+            f.write(pid + "\n")
 
-    def run(self):
-        data = self.load_data()
-        assert len(data) > 0, "No data to process."
+    def run(self) -> None:
+        entries = self.load_data()
+        assert entries, "No new papers to process."
+
         enhanced = []
-        for entry in tqdm(data, desc="Processing papers"):
-            paper_id = entry.get("id", "<unknown>")
+        for entry in tqdm(entries, desc="Processing papers"):
+            pid = entry["id"]
+            # prepare inputs
+            abstract = entry.get("summary", "")
+            comment = entry.get("comment") or ""
+            content = abstract + (f"\n\narXiv Comment: {comment}" if comment else "")
+
+            # optionally load PDF text
+            pdf_text = ""
+            if settings.pdf_folder:
+                pdf_path = settings.pdf_folder / f"{pid}.pdf"
+                if pdf_path.exists():
+                    pdf_text = pymupdf4llm.to_markdown(str(pdf_path))
+
+            # invoke LLM
             try:
                 summary: PaperSummary = self.chain.invoke(
-                    {"content": entry.get("summary", "")}
+                    {
+                        "abstract": content,
+                        "pdf_content": pdf_text,
+                    }
                 )
                 entry["AI"] = summary.model_dump()
             except OutputParserException as err:
-                logger.error(f"Parsing failed for {paper_id}: {err}")
-                entry["AI"] = {field: "Error" for field in PaperSummary.model_fields}
+                logger.error(f"Parsing failed for {pid}: {err}")
+                entry["AI"] = {f: "Error" for f in PaperSummary.model_fields}
+
             enhanced.append(entry)
-        self.save_result(enhanced)
+            # mark seen
+            self.save_seen(pid)
+
+        # write output
+        with settings.output_path.open("w") as f:
+            for rec in enhanced:
+                f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+        # Remove pdf folder if it exists
+        if settings.pdf_folder and settings.pdf_folder.exists():
+            for pdf in settings.pdf_folder.glob("*.pdf"):
+                pdf.unlink()
+            settings.pdf_folder.rmdir()
+
+        logger.info(
+            f"Saved {len(enhanced)} enhanced records to {settings.output_path}."
+        )

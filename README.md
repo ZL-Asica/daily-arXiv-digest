@@ -1,10 +1,5 @@
 # daily arXiv digest - LLM-enhanced
 
-<<<<<<< HEAD
-# How to use
-This repo will daily crawl arXiv papers about **cs.CV and cs.CL**, and use **DeepSeek** to summarize the papers in **Chinese**.
-If you wish to crawl other arXiv categories, use other LLMs or other language, please follow the bellow instructions.
-=======
 ## About
 
 This tool will daily crawl [https://arxiv.org](https://arxiv.org) and use LLMs to summarize them.
@@ -15,7 +10,6 @@ This tool will daily crawl [https://arxiv.org](https://arxiv.org) and use LLMs t
 
 This repo will daily crawl arXiv papers about **cs.HC, cs.LG, cs.CL**, and use **ChatGPT** to summarize the papers.
 If you wish to crawl other arXiv categories or use other LLMs, please follow the bellow instructions.
->>>>>>> 6d1eb9e (refactor: redesign ai package logic and generate logic)
 Otherwise, you can directly use this repo. Please star it if you like :)
 
 **Instructions:**
