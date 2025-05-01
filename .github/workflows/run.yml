@@ -40,6 +40,10 @@ jobs:
       run: |
         source .venv/bin/activate
         python -m ai.main -i data/${TODAY}.jsonl -o data/${TODAY}_AI_enhanced.jsonl -p ../data/pdf_${TODAY}/
+        if [ ! -f data/${TODAY}_AI_enhanced.jsonl ]; then
+          echo "No new arXiv data for ${TODAY}, skipping workflow."
+          exit 0
+        fi
 
     - name: Convert to Markdown 📄
       run: |
