@@ -11,9 +11,6 @@ class PaperSummary(BaseModel):
     conclusion: str = Field(..., description="Conclusion of the paper")
     key_contributions: List[str] = Field(..., description="Top 2–3 novel contributions")
     limitations: str = Field(..., description="Known limitations or caveats")
-    future_work: str = Field(
-        ..., description="Authors’ stated directions for future research"
-    )
     keywords: List[str] = Field(
         ..., description="3–5 author-provided or extracted keywords"
     )

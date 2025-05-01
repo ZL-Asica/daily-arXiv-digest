@@ -53,6 +53,9 @@ def render_readme(template_path: str, toc: dict):
             "November",
             "December",
         ]
+        # Reverse the order to get Dec–Jan
+        month_order.reverse()
+
         for month in month_order:
             if month not in toc[year]:
                 continue

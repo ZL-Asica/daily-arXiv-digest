@@ -22,7 +22,9 @@ Otherwise, you can directly use this repo. Please star it if you like :)
    1. `OPENAI_API_KEY`: your OpenAI API key for model call
    2. `USER_BACKGROUND`: your personal background (prefer third person view), this will be injected into the system side prompt for the LLM to better assist and ranking whether the paper is useful for you. You can use Markdown syntax to format it. For example:
       ```makrdown
-      The user is a PhD student in computer science who is interested in Human-Computer Interaction and natural language processing. She has a background in deep learning and has published several papers in top-tier conferences.
+      The user is a master student in computer science who is interested in Human-Computer Interaction and natural language processing.
+
+      She has a background in deep learning and has published several papers in top-tier conferences.
       ```
 4. Go to Variables (Variables are shown as plain text and are used for non-sensitive data). Create the following repository variables:
     1. `CATEGORIES`: separate the categories with ",", such as "cs.HC,cs.LG,cs.CL"

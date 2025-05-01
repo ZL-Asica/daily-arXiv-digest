@@ -19,13 +19,13 @@
 
 **Method:** {method}
 
-**Key Contributions:** {key_contributions}
+**Key Contributions:**
+
+{key_contributions}
 
 **Result:** {result}
 
 **Limitations:** {limitations}
-
-**Future Work:** {future_work}
 
 **Conclusion:** {conclusion}
 

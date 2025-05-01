@@ -62,6 +62,10 @@ if __name__ == "__main__":
 
         for item in data:
             if item["categories"][0] == cate:
+                contributions = [
+                    f"\t{i + 1}. {contribution}"
+                    for i, contribution in enumerate(item["AI"]["key_contributions"])
+                ]
                 output_lines.append(
                     template.format(
                         title=item["title"],
@@ -77,9 +81,8 @@ if __name__ == "__main__":
                         method=item["AI"]["method"],
                         result=item["AI"]["result"],
                         conclusion=item["AI"]["conclusion"],
-                        key_contributions=", ".join(item["AI"]["key_contributions"]),
+                        key_contributions="\n".join(contributions),
                         limitations=item["AI"]["limitations"],
-                        future_work=item["AI"]["future_work"],
                         idx=next(idx),
                     )
                 )
