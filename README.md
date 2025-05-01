@@ -6,11 +6,12 @@ This tool will daily crawl [https://arxiv.org](https://arxiv.org) and use LLMs t
 
 ## Contents
 
-_**Last update: April 30, 2025 at 11:34 AM**_
+_**Last update: May 01, 2025 at 11:32 AM**_
 
 ### 2025
 
-#### 📅 April 🌟
+<details><summary>📅 April</summary>
+
 
 - [2025-04-30](contents/2025-04-30.md)
 - [2025-04-29](contents/2025-04-29.md)
@@ -18,6 +19,13 @@ _**Last update: April 30, 2025 at 11:34 AM**_
 - [2025-04-26](contents/2025-04-26.md)
 - [2025-04-25](contents/2025-04-25.md)
 - [2025-04-24](contents/2025-04-24.md)
+
+</details>
+
+
+#### 📅 May 🌟
+
+- [2025-05-01](contents/2025-05-01.md)
 
 
 ## How to use
