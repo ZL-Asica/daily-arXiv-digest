@@ -6,9 +6,14 @@ This tool will daily crawl [https://arxiv.org](https://arxiv.org) and use LLMs t
 
 ## Contents
 
-_**Last update: May 01, 2025 at 11:32 AM**_
+_**Last update: May 02, 2025 at 11:34 AM**_
 
 ### 2025
+
+#### 📅 May 🌟
+
+- [2025-05-02](contents/2025-05-02.md)
+- [2025-05-01](contents/2025-05-01.md)
 
 <details><summary>📅 April</summary>
 
@@ -22,10 +27,6 @@ _**Last update: May 01, 2025 at 11:32 AM**_
 
 </details>
 
-
-#### 📅 May 🌟
-
-- [2025-05-01](contents/2025-05-01.md)
 
 
 ## How to use
@@ -42,7 +43,9 @@ Otherwise, you can directly use this repo. Please star it if you like :)
    1. `OPENAI_API_KEY`: your OpenAI API key for model call
    2. `USER_BACKGROUND`: your personal background (prefer third person view), this will be injected into the system side prompt for the LLM to better assist and ranking whether the paper is useful for you. You can use Markdown syntax to format it. For example:
       ```makrdown
-      The user is a PhD student in computer science who is interested in Human-Computer Interaction and natural language processing. She has a background in deep learning and has published several papers in top-tier conferences.
+      The user is a master student in computer science who is interested in Human-Computer Interaction and natural language processing.
+
+      She has a background in deep learning and has published several papers in top-tier conferences.
       ```
 4. Go to Variables (Variables are shown as plain text and are used for non-sensitive data). Create the following repository variables:
     1. `CATEGORIES`: separate the categories with ",", such as "cs.HC,cs.LG,cs.CL"
