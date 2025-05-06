@@ -31,8 +31,7 @@ def render_readme(template_path: str, toc: dict):
     current_year = now.year
     current_month = now.strftime("%B")
 
-    update_str = now.strftime("Last update: %B %d, %Y at %I:%M %p")
-    sections = [f"_**{update_str}**_\n"]
+    sections = []
 
     # Sort years descending
     for year in sorted(toc.keys(), reverse=True):
@@ -66,7 +65,7 @@ def render_readme(template_path: str, toc: dict):
                     sections.append(f"- [{date_str}]({path})")
                 sections.append("")  # blank line
             else:
-                sections.append(f"<details><summary>📅 {month}</summary>\n\n")
+                sections.append(f"<details>\n<summary>📅 {month}</summary>\n\n")
                 for date_str, path in sorted(toc[year][month], reverse=True):
                     sections.append(f"- [{date_str}]({path})")
                 sections.append("\n</details>\n")

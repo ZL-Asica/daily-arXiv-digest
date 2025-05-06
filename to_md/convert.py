@@ -22,6 +22,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     data_path = Path(args.data)
+
+    if data_path.suffix != ".jsonl":
+        raise ValueError("Input file must be a JSONL file.")
+    if not data_path.exists() or not data_path.is_file():
+        print(f"File {data_path} does not exist.")
+        exit(0)
+
     data = []
 
     # Get preferred category order from env
