@@ -2,22 +2,24 @@
 
 ## About
 
-This tool will daily crawl [https://arxiv.org](https://arxiv.org) and use LLMs to summarize them (based on arXiv summary, comments, and raw pdf file). It also rate the suitability of the paper for you based on your personal background.
+This tool will daily crawl [https://arxiv.org](https://arxiv.org) and use LLMs to summarize them (based on arXiv summary, comments, and raw pdf file). It also rate the suitability of the paper for you based on your personal background. Weekdays only (no new papers on weekends).
+
+🌟 Please star it if you like <3.
 
 ## Contents
-
-_**Last update: May 06, 2025 at 11:39 AM**_
 
 ### 2025
 
 #### 📅 May 🌟
 
+- [2025-05-07](contents/2025-05-07.md)
 - [2025-05-06](contents/2025-05-06.md)
 - [2025-05-05](contents/2025-05-05.md)
 - [2025-05-02](contents/2025-05-02.md)
 - [2025-05-01](contents/2025-05-01.md)
 
-<details><summary>📅 April</summary>
+<details>
+<summary>📅 April</summary>
 
 
 - [2025-04-30](contents/2025-04-30.md)
@@ -33,9 +35,9 @@ _**Last update: May 06, 2025 at 11:39 AM**_
 
 ## How to use
 
-This repo will daily crawl arXiv papers about **cs.HC, cs.LG, cs.CL**, and use **ChatGPT** to summarize the papers.
+This repo will daily crawl arXiv papers about **cs.HC, cs.CL**, and use **ChatGPT** to summarize the papers.
 If you wish to crawl other arXiv categories or use other LLMs, please follow the bellow instructions.
-Otherwise, you can directly use this repo. Please star it if you like :)
+Otherwise, you can directly use this repo.
 
 **Instructions:**
 
@@ -44,13 +46,15 @@ Otherwise, you can directly use this repo. Please star it if you like :)
 3. Go to Secrets (Secrets are encrypted and are used for sensitive data). Create two repository secrets:
    1. `OPENAI_API_KEY`: your OpenAI API key for model call
    2. `USER_BACKGROUND`: your personal background (prefer third person view), this will be injected into the system side prompt for the LLM to better assist and ranking whether the paper is useful for you. You can use Markdown syntax to format it. For example:
+
       ```makrdown
       The user is a master student in computer science who is interested in Human-Computer Interaction and natural language processing.
 
       She has a background in deep learning and has published several papers in top-tier conferences.
       ```
+
 4. Go to Variables (Variables are shown as plain text and are used for non-sensitive data). Create the following repository variables:
-    1. `CATEGORIES`: separate the categories with ",", such as "cs.HC,cs.LG,cs.CL"
+    1. `CATEGORIES`: separate the categories with ",", such as "cs.HC,cs.CL"
     2. `MODEL_NAME` such as "gpt-4o-mini"
 5. Go to your-own-repo -> Actions -> `daily-arXiv-digest`
 6. You can manually click **Run workflow** to test if it works well (it may takes about half hour).
