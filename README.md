@@ -10,7 +10,13 @@ This tool will daily crawl [https://arxiv.org](https://arxiv.org) and use LLMs t
 
 ### 2025
 
-#### 📅 June 🌟
+#### 📅 July 🌟
+
+- [2025-07-01](contents/2025-07-01.md)
+
+<details>
+<summary>📅 June</summary>
+
 
 - [2025-06-30](contents/2025-06-30.md)
 - [2025-06-27](contents/2025-06-27.md)
@@ -31,6 +37,9 @@ This tool will daily crawl [https://arxiv.org](https://arxiv.org) and use LLMs t
 - [2025-06-04](contents/2025-06-04.md)
 - [2025-06-03](contents/2025-06-03.md)
 - [2025-06-02](contents/2025-06-02.md)
+
+</details>
+
 
 <details>
 <summary>📅 May</summary>
