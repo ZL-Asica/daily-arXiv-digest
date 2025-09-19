@@ -1,8 +1,8 @@
 name: daily-arXiv-digest
 
 on:
-  schedule:
-    - cron: "0 11 * * 1-5" # Every weekday at 11:00 UTC
+  # schedule: # Uncomment to enable scheduled runs
+  #   - cron: "0 11 * * 1-5" # Every weekday at 11:00 UTC
   workflow_dispatch:
 
 
